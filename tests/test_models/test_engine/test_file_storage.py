@@ -11,6 +11,7 @@ import models
 from models import storage
 from models.base_model import BaseModel
 from models.state import State
+from models.user import User
 from models.engine.file_storage import FileStorage
 
 db = os.getenv("HBNB_TYPE_STORAGE")
@@ -128,3 +129,28 @@ class testFileStorage(unittest.TestCase):
             Test State model in Filestorage
         '''
         self.assertTrue(isinstance(storage, FileStorage))
+
+    def test_get_method(self):
+        """Tests FileStorage's get method that retrieves one object"""
+        state_dict = {'name': 'Nevada', 'id': 'thisismyid'}
+        state = State(**state_dict)
+        state.save()
+        new_state = self.storage.get('State', 'thisismyid')
+        self.assertEqual(state.id, new_state.id)
+
+    def test_count_method_without_filter(self):
+        """Tests FileStorage's count method which retrieves a count of objects
+           with an optional class filter
+        """
+        self.assertEqual(len(self.storage.all()), self.storage.count())
+
+    def test_count_method_with_filter(self):
+        """Tests FileStorage's count method which retrieves a count of objects
+           with an optional class filter
+        """
+        objs_dict = self.storage.all()
+        count = 0
+        for obj in objs_dict.values():
+            if type(obj) is User:
+                count += 1
+        self.assertEqual(count, self.storage.count('User'))
