@@ -9,6 +9,7 @@ import models
 from models.state import State
 from models.city import City
 from models.base_model import Base
+from sqlalchemy.orm.exc import MultipleResultsFound
 
 
 class DBStorage:
@@ -89,3 +90,22 @@ class DBStorage:
             Remove private session attribute
         '''
         self.__session.close()
+
+    def get(self, cls, id):
+        """
+            Method to retrieve one object from db
+            Args:
+                cls (str): string representation of class to query
+                id (str): id of object
+            Returns:
+                object that matches query otherwise None
+        """
+        if cls not in models.classes.keys():
+            return None
+
+        cls = models.classes[cls]
+
+        try:
+            return self.__session.query(cls).filter_by(id=id).one_or_none()
+        except MultipleResultsFound:
+            return None
