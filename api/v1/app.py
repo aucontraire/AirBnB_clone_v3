@@ -18,6 +18,7 @@ def tear_down(error):
     """remove the current SQLAlchemy Session"""
     storage.close()
 
+
 @app.errorhandler(404)
 def not_found(message):
     """handles the 404 status code"""
@@ -25,7 +26,8 @@ def not_found(message):
     response.status_code = 404
     return response
 
-if __name__ == '__main__': 
+
+if __name__ == '__main__':
     app.run(
         host=getenv('HBNB_API_HOST', default='0.0.0.0'),
         port=getenv('HBNB_API_PORT', default=5000),
