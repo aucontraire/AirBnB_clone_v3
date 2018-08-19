@@ -5,12 +5,13 @@ from flask import jsonify
 from models import storage
 
 
-@app_views.route('/status', methods=['GET'])
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
 def show_status():
     """Shows the status"""
     return jsonify({'status': 'OK'})
 
-@app_views.route('/stats', methods=['GET'])
+
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def get_stats():
     """Gets stats for models"""
     stats_dict = {

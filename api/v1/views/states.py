@@ -7,7 +7,7 @@ from api.v1.app import not_found
 from models.state import State
 
 
-@app_views.route('/states/', methods=['GET'])
+@app_views.route('/states/', methods=['GET'], strict_slashes=False)
 def show_states():
     states = list(storage.all('State').values())
     states_list = []
@@ -16,7 +16,7 @@ def show_states():
     return jsonify(states_list)
 
 
-@app_views.route('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def show_state(state_id):
     state = storage.get('State', state_id)
     if state:
@@ -25,7 +25,8 @@ def show_state(state_id):
         return not_found(404)
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'])
+@app_views.route(
+    '/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     state = storage.get('State', state_id)
     if state:
@@ -35,7 +36,7 @@ def delete_state(state_id):
         return not_found(404)
 
 
-@app_views.route('/states/', methods=['POST'])
+@app_views.route('/states/', methods=['POST'], strict_slashes=False)
 def create_state():
     content = request.get_json(silent=True)
     error_message = ""
@@ -57,16 +58,16 @@ def create_state():
     return response
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'])
+@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     state = storage.get('State', state_id)
     error_message = ""
     if state:
         content = request.get_json(silent=True)
         if type(content) is dict:
+            ignore = ['id', 'created_at', 'updated_at']
             for name, value in content.items():
-                if name != 'id' or name != 'created_at' \
-                   or name != 'updated_at':
+                if name not in ignore:
                     setattr(state, name, value)
             storage.save()
             return jsonify(state.to_dict())
