@@ -11,7 +11,6 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "0.0.0.0"}})
 
 
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
 
