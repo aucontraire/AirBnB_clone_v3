@@ -20,7 +20,7 @@ db = getenv("HBNB_TYPE_STORAGE")
 
 
 @unittest.skipIf(db != 'db', "Testing DBstorage only")
-class test_DBStorage(unittest.TestCase):
+class TestDBStorage(unittest.TestCase):
     '''
         Testing the DB_Storage class
     '''
