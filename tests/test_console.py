@@ -16,7 +16,7 @@ from os import getenv
 db = getenv("HBNB_TYPE_STORAGE", "fs")
 
 
-class test_console(unittest.TestCase):
+class TestConsole(unittest.TestCase):
     ''' Test the console module'''
     def setUp(self):
         '''setup for'''
