@@ -79,7 +79,7 @@ def create_state():
     else:
         error_message = "Not a JSON"
 
-    response = jsonify({"error": error_message})
+    response = jsonify(error_message)
     response.status_code = 400
     return response
 
@@ -108,7 +108,7 @@ def update_state(state_id):
             return jsonify(state.to_dict())
         else:
             error_message = "Not a JSON"
-            response = jsonify({"error": error_message})
+            response = jsonify(error_message)
             response.status_code = 400
             return response
 
