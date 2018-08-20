@@ -137,7 +137,7 @@ class test_DBStorage(unittest.TestCase):
         storage.save()
         test_state = storage.get("State", save_id)
         self.assertEqual(test_state.id, save_id)
-    
+
     def test_dbstorage_count_withfilter(self):
         '''
             Testing count method with an optional filter class
@@ -175,4 +175,3 @@ class test_DBStorage(unittest.TestCase):
         storage.save()
         total = storage.count()
         self.assertEqual(total, counts + 2)
-
