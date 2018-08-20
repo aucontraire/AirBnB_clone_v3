@@ -9,6 +9,7 @@ from api.v1.views import app_views
 app = Flask(__name__)
 
 
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.register_blueprint(app_views)
 
 
@@ -18,9 +19,9 @@ def tear_down(error):
     storage.close()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     app.run(
-        host=getenv['HBNB_API_HOST'],
-        port=getenv['HBNB_API_PORT'],
+        host=getenv('HBNB_API_HOST', default='0.0.0.0'),
+        port=getenv('HBNB_API_PORT', default=5000),
         threaded=True
     )
