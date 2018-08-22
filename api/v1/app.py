@@ -15,13 +15,21 @@ app.register_blueprint(app_views)
 
 @app.teardown_appcontext
 def tear_down(error):
-    """remove the current SQLAlchemy Session"""
+    """Remove the current SQLAlchemy Session
+           Parameters:
+               error [str]: an error message or exception
+    """
     storage.close()
 
 
 @app.errorhandler(404)
 def not_found(message):
-    """handles the 404 status code"""
+    """Handles the 404 status code
+           Parameters:
+               message [str]: a custom message to display
+           Returns:
+               The HTTP response for the request
+    """
     response = jsonify({'error': 'Not found'})
     response.status_code = 404
     return response
