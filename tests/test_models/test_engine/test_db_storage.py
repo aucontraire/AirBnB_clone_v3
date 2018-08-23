@@ -9,10 +9,12 @@ from models.engine.db_storage import DBStorage
 from models import storage
 from models.user import User
 from models.state import State
+from models.city import City
 from models import storage
 from console import HBNBCommand
 from os import getenv
 from io import StringIO
+from models.base_model import Base
 
 db = getenv("HBNB_TYPE_STORAGE")
 
@@ -69,6 +71,8 @@ class test_DBStorage(unittest.TestCase):
         self.assertTrue(hasattr(self.dbstorage, "save"))
         self.assertTrue(hasattr(self.dbstorage, "delete"))
         self.assertTrue(hasattr(self.dbstorage, "reload"))
+        self.assertTrue(hasattr(self.dbstorage, "get"))
+        self.assertTrue(hasattr(self.dbstorage, "count"))
 
     def test_dbstorage_all(self):
         '''
@@ -121,3 +125,54 @@ class test_DBStorage(unittest.TestCase):
             Test to check if storage is an instance for DBStorage
         '''
         self.assertTrue(isinstance(storage, DBStorage))
+
+    def test_dbstorage_get(self):
+        '''
+            Testing the get method
+        '''
+        new_state = State(name="Illinois")
+        self.assertIsInstance(new_state, State)
+        storage.new(new_state)
+        save_id = new_state.id
+        storage.save()
+        test_state = storage.get("State", save_id)
+        self.assertEqual(test_state.id, save_id)
+    
+    def test_dbstorage_count_withfilter(self):
+        '''
+            Testing count method with an optional filter class
+        '''
+        counts = 0
+        storage.reload()
+        objs = storage.all('State')
+        for obj in objs:
+            counts = counts + 1
+        total = storage.count('State')
+        self.assertEqual(total, counts)
+        new_state1 = State(name="Wyoming")
+        new_state2 = State(name="Washington")
+        storage.new(new_state1)
+        storage.new(new_state2)
+        storage.save()
+        total = storage.count('State')
+        self.assertEqual(total, counts + 2)
+
+    def test_dbstorage_count_withoutfilter(self):
+        '''
+            Testing count method without an optional filter class
+        '''
+        counts = 0
+        storage.reload()
+        objs = storage.all("")
+        for obj in objs:
+            counts = counts + 1
+        total = storage.count()
+        self.assertEqual(total, counts)
+        new_state = State(name="Delaware")
+        new_city = City(name="Dover", state_id=new_state.id)
+        storage.new(new_state)
+        storage.new(new_city)
+        storage.save()
+        total = storage.count()
+        self.assertEqual(total, counts + 2)
+
