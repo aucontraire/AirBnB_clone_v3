@@ -41,7 +41,8 @@ def show_place(place_id):
         return not_found(404)
 
 
-@app_views.route('/places/<place_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route(
+    '/places/<place_id>', methods=['DELETE'], strict_slashes=False)
 def delete_place(place_id):
     """Deletes place
        Args:
