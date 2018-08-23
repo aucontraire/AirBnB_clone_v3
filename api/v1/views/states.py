@@ -3,7 +3,6 @@
 from models import storage
 from flask import jsonify, request
 from api.v1.views import app_views
-from api.v1.app import not_found
 from models.state import State
 
 
