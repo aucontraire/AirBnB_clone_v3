@@ -123,6 +123,7 @@ def update_city(city_id):
             for key, value in content.items():
                 if key not in ignore:
                     setattr(city, key, value)
+            storage.save()
             return jsonify(city.to_dict())
         else:
             response = jsonify({"error": "Not a JSON"})
