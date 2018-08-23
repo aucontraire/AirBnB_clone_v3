@@ -2,7 +2,7 @@
 """Users API routing"""
 
 from models import storage
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.user import User
 
@@ -34,7 +34,7 @@ def display_user(user_id):
     if user:
         return jsonify(user.to_dict())
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route('/users/<user_id>/', methods=['DELETE'], strict_slashes=False)
@@ -53,7 +53,7 @@ def delete_user(user_id):
         storage.save()
         return jsonify({})
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route('/users/', methods=['POST'], strict_slashes=False)
@@ -110,4 +110,4 @@ def update_user(user_id):
             response.status_code = 400
             return response
     else:
-        return not_found(404)
+        abort(404)

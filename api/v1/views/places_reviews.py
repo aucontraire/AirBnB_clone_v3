@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Reviews API Routes"""
 from models import storage
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.review import Review
 from models.place import Place
@@ -24,7 +24,7 @@ def show_reviews(place_id):
             reviews_list.append(review.to_dict())
         return jsonify(reviews_list)
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -41,7 +41,7 @@ def display_review(review_id):
     if review:
         return jsonify(review.to_dict())
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -60,7 +60,7 @@ def delete_review(review_id):
         storage.save()
         return jsonify({})
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -94,14 +94,14 @@ def create_review(place_id):
                     return response
 
                 else:
-                    return not_found(404)
+                    abort(404)
         else:
             error_message = "Not a JSON"
         response = jsonify({"error": error_message})
         response.status_code = 400
         return response
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -131,4 +131,4 @@ def update_review(review_id):
             response.status_code = 400
             return response
     else:
-        return not_found(404)
+        abort(404)

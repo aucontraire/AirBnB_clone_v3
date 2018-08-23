@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """States API routes"""
 from models import storage
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.state import State
 
@@ -34,7 +34,7 @@ def show_state(state_id):
     if state:
         return jsonify(state.to_dict())
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -54,7 +54,7 @@ def delete_state(state_id):
         storage.save()
         return jsonify({})
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route('/states/', methods=['POST'], strict_slashes=False)
@@ -112,4 +112,4 @@ def update_state(state_id):
             response.status_code = 400
             return response
 
-    return not_found(404)
+    abort(404)

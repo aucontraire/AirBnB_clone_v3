@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Places API routes"""
 from models import storage
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.place import Place
 
@@ -22,7 +22,7 @@ def show_places(city_id):
             places_list.append(place.to_dict())
         return jsonify(places_list)
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
@@ -37,7 +37,7 @@ def show_place(place_id):
     if place:
         return jsonify(place.to_dict())
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -55,7 +55,7 @@ def delete_place(place_id):
         storage.save()
         return jsonify({})
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route(
@@ -86,7 +86,7 @@ def create_place(city_id):
                     else:
                         error_message = "Missing name"
                 else:
-                    return not_found(404)
+                    abort(404)
             else:
                 error_message = "Missing user_id"
         else:
@@ -96,7 +96,7 @@ def create_place(city_id):
         response.status_code = 400
         return response
     else:
-        return not_found(404)
+        abort(404)
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'], strict_slashes=False)
@@ -123,4 +123,4 @@ def update_place(place_id):
             response.status_code = 400
             return response
     else:
-        return not_found(404)
+        abort(404)
