@@ -166,10 +166,9 @@ def search_places():
                 for amenity in content["amenities"]:
                     amenity_obj = storage.get("Amenity", amenity)
                     if amenity_obj:
-                        if amenity_obj in place.amenities:
-                            continue
-                        else:
+                        if amenity_obj not in place.amenities:
                             places_list.remove(place)
+                            break
 
         for place in places_list:
             place_dicts.append(place.to_dict())
