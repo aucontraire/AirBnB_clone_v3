@@ -131,6 +131,7 @@ def search_places():
     places_list = []
     place_dicts = []
     cities_list = []
+    removal_list = []
     empty = True
     content = request.get_json(silent=True)
 
@@ -167,8 +168,12 @@ def search_places():
                     amenity_obj = storage.get("Amenity", amenity)
                     if amenity_obj:
                         if amenity_obj not in place.amenities:
-                            places_list.remove(place)
+                            removal_list.append(place)
                             break
+
+        for place in removal_list:
+            if place in places_list:
+                places_list.remove(place)
 
         for place in places_list:
             place_dicts.append(place.to_dict())
